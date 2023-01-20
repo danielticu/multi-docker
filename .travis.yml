@@ -9,8 +9,13 @@ script:
   - docker run -e CI=true daniel/react-test npm test
 
 after_success:
-  - docker build -t daniel/multi-client ./client
-  - docker build -t daniel/multi-nginx ./nginx
-  - docker build -t daniel/multi-server ./server
-  - docker build -t daniel/multi-worker ./worker
-
+  - docker build -t danielticu/multi-client ./client
+  - docker build -t danielticu/multi-nginx ./nginx
+  - docker build -t danielticu/multi-server ./server
+  - docker build -t danielticu/multi-worker ./worker
+# Log in to docker cli using env vars from travis console
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push danielticu/multi-client
+  - docker push danielticu/multi-nginx
+  - docker push danielticu/multi-server
+  - docker push danielticu/multi-worker
